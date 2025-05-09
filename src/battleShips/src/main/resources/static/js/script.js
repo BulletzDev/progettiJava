@@ -1,28 +1,43 @@
-$(document).ready(function () {
-    function createEmptyGrid(container) {
-        for (let i = 0; i < 100; i++) {
-            $(container).append('<div class="cell" data-index="' + i + '"></div>');
-        }
-    }
+document.addEventListener("DOMContentLoaded", function () {
 
-    createEmptyGrid('#player-grid');
-    createEmptyGrid('#computer-grid');
+    const colors = ["#FE57F3", "#33FF57", "#3357FF", "#F1C40F", "#8E44AD", "#1ABC9C", "#E74C3C", "#3498DB"];
 
-    // Chiamata AJAX per ottenere le posizioni casuali
+    createEmptyGrid('player-grid');
+    createEmptyGrid('computer-grid');
     $.ajax({
         url: '/popola-griglie',
         method: 'GET',
         success: function (response) {
-            // response = { player: [1, 23, 45], computer: [10, 20, 30] } 
-            response.player.forEach(index => {
-                $('#player-grid .cell').eq(index).addClass('ship');
+            let colorIndex = 0;
+            response.player.allShips.forEach(element => {
+                element.ship.forEach(element1 => {
+                    const cell = $('#player-grid .cell').eq(element1.posX + "" + element1.posy);
+                    cell.addClass('ship');
+                    cell.css('background-color', colors[colorIndex]);
+                })
+                colorIndex++;
             });
-            response.computer.forEach(index => {
-                $('#computer-grid .cell').eq(index).addClass('ship');
+            colorIndex = 0;
+            response.computer.allShips.forEach(element => {
+                element.ship.forEach(element1 => {
+                    const cell = $('#computer-grid .cell').eq(element1.posX + "" + element1.posy);
+                    cell.addClass('ship');
+                    cell.css('background-color', colors[colorIndex]);
+                })
+                colorIndex++;
             });
         },
         error: function () {
             alert('Errore nel caricamento delle griglie!');
         }
     });
-});
+})
+
+function createEmptyGrid(container) {
+    for (let i = 0; i < 100; i++) {
+        let item = document.createElement("div");
+        item.setAttribute("data-index", i % 10 + "" + parseInt(i / 10));
+        item.classList.add("cell");
+        document.getElementById(container).append(item);
+    }
+}

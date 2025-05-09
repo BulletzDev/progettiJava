@@ -129,4 +129,9 @@ public class Ships {
         return 0; // No ships are sunk
     }
 
+    public void clearAll() {
+        allShips.clear();
+        alreadyHit.clear();
+        potentialTargets.clear();
+    }
 }

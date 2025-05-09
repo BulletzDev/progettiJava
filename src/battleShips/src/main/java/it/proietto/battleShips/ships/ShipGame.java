@@ -35,7 +35,8 @@ public class ShipGame {
      * @return 0 if the player hit and didn't win, 1 if hit ship sunk and won, 2 if
      *         hit and the ship sunk and didn't win,3 if didn't hit
      * @throws AlreadyHitException if the position has already been hit
-     */    public int playerMove(int posX, int posy) throws AlreadyHitException {
+     */
+    public int playerMove(int posX, int posy) throws AlreadyHitException {
         return computerField.hitBoat(posX, posy);
     }
 
@@ -45,7 +46,8 @@ public class ShipGame {
 
     /**
      *
-     * @return List<Integer> containing the posX, the posY and an integer from {@link Ships#hitBoat(int, int)}
+     * @return List<Integer> containing the posX, the posY and an integer from
+     *         {@link Ships#hitBoat(int, int)}
      */
     public List<Integer> computerMove() {
         Random rand = new Random();
@@ -84,10 +86,14 @@ public class ShipGame {
      * @param posY The column of the hit position.
      */
     private void addAdjacentPositions(int posX, int posY) {
-        if (posX > 0) potentialTargets.add("" + (posX - 1) + posY);
-        if (posX < 9) potentialTargets.add("" + (posX + 1) + posY);
-        if (posY > 0) potentialTargets.add("" + posX + (posY - 1));
-        if (posY < 9) potentialTargets.add("" + posX + (posY + 1));
+        if (posX > 0)
+            potentialTargets.add("" + (posX - 1) + posY);
+        if (posX < 9)
+            potentialTargets.add("" + (posX + 1) + posY);
+        if (posY > 0)
+            potentialTargets.add("" + posX + (posY - 1));
+        if (posY < 9)
+            potentialTargets.add("" + posX + (posY + 1));
     }
 
 }
