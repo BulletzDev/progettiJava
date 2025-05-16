@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.proietto.battleShips.ships.AlreadyHitException;
 import it.proietto.battleShips.ships.ShipGame;
 import it.proietto.battleShips.ships.Ships;
 
@@ -29,6 +31,13 @@ public class BattleshipController {
         griglie.put("player", game.getPlayerField());
         griglie.put("computer", game.getComputerField());
         return griglie;
+    }
+
+    @GetMapping("/attack/{index}")
+    public int attack(@PathVariable("index") int index) throws AlreadyHitException {
+        int x = index / 10;
+        int y = index % 10;
+        return game.playerMove(x, y);
     }
 
     private Ships genPosPlayer() {

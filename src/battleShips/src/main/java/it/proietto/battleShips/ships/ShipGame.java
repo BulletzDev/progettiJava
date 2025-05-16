@@ -32,11 +32,15 @@ public class ShipGame {
     /**
      * @param posX indicates the row that you are hitting
      * @param posy indicates the column that you are hitting
-     * @return 0 if the player hit and didn't win, 1 if hit ship sunk and won, 2 if
+     * @return -1 if boat not initialized, 0 if the player hit and didn't win, 1 if
+     *         hit ship sunk and won, 2 if
      *         hit and the ship sunk and didn't win,3 if didn't hit
      * @throws AlreadyHitException if the position has already been hit
      */
     public int playerMove(int posX, int posy) throws AlreadyHitException {
+        if (playerField.isEmpty() || computerField.isEmpty()) {
+            return -1;
+        }
         return computerField.hitBoat(posX, posy);
     }
 

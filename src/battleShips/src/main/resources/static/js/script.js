@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    document.getElementById("autoPlace").addEventListener("click", function (event) {
+    document.getElementById("autoPlace").addEventListener("click", function () {
         placeAuto();
         startAttack();
     });
@@ -93,4 +93,30 @@ function placeShips(response) {
         });
         colorIndex++;
     });
+}
+
+document.getElementById("computer-grid").addEventListener("click", function (event) {
+
+    if (event.target && event.target.hasAttribute("data-index")) {
+        let dataIndex = event.target.getAttribute("data-index");
+        console.log(dataIndex)
+        attack(dataIndex);
+    }
+});
+
+
+function attack(index) {
+    $.ajax({
+        url: "/attack/" + index,
+        method: "GET",
+        success: function (response) {
+            switch (response) {
+                
+            }
+        },
+        error: function (responde) {
+
+        }
+
+    })
 }
