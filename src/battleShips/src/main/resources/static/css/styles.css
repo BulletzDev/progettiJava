@@ -1,7 +1,12 @@
 .grid {
     display: grid;
-    width: 50%;
     grid-template-columns: repeat(10, 50px);
+    grid-template-rows: repeat(10, 50px);
+    gap: 0px;
+    width: 500px;
+    height: 500px;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .cell {
@@ -10,13 +15,9 @@
     border: 1px solid #ccc;
     text-align: center;
     line-height: 30px;
+    display: inline-flex;
 }
 
 .ship {
     background-color: lightblue;
-}
-
-.displayFlex {
-    display: flex;
-    justify-content: space-between;
 }

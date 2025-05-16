@@ -134,4 +134,8 @@ public class Ships {
         alreadyHit.clear();
         potentialTargets.clear();
     }
+
+    public boolean isEmpty() {
+        return allShips.isEmpty();
+    }
 }
