@@ -1,4 +1,7 @@
+let originalText = "";
+
 document.addEventListener("DOMContentLoaded", function () {
+    originalText = document.getElementById("descText").innerHTML;
     createEmptyGrid('player-grid');
     createEmptyGrid('computer-grid');
     placingButtons();
@@ -27,7 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function startAttack() {
     document.getElementById("buttons").innerHTML = "";
-    document.getElementById("descText").innerHTML = "ATTACCA! clicca su una casella del campo avversario";
+    document.getElementById("descText").innerHTML = "ATTACCA! clicca su una casella del campo avversario<br>";
+    originalText = document.getElementById("descText").innerHTML;
 }
 
 function placingButtons() {
@@ -51,7 +55,7 @@ function placingButtons() {
 function createEmptyGrid(container) {
     for (let i = 0; i < 100; i++) {
         let item = document.createElement("div");
-        item.setAttribute("data-index", i % 10 + "" + parseInt(i / 10));
+        item.setAttribute("data-index", parseInt(i / 10) + "" + i % 10);
         item.classList.add("cell");
         document.getElementById(container).append(item);
     }
@@ -62,6 +66,7 @@ function placeAuto() {
         url: '/popGrid',
         method: 'GET',
         success: function (response) {
+            console.log(response)
             placeShips(response);
         },
         error: function () {
@@ -99,19 +104,39 @@ document.getElementById("computer-grid").addEventListener("click", function (eve
 
     if (event.target && event.target.hasAttribute("data-index")) {
         let dataIndex = event.target.getAttribute("data-index");
-        console.log(dataIndex)
         attack(dataIndex);
     }
 });
 
 
 function attack(index) {
+    const textMess = document.getElementById("descText");
+    const notIn = "Campo non inizializzato!";
+    const alrHit = "Casella " + parseInt(index / 10) + "" + index % 10 + " già colpita !!";
+    //se clicco veloce ricompare alrHit perchè viene modificato originalText
     $.ajax({
         url: "/attack/" + index,
         method: "GET",
         success: function (response) {
             switch (response) {
-                
+                case -2:
+                    if (!textMess.innerHTML.includes(alrHit)) {
+                        textMess.innerHTML += alrHit;
+                        setTimeout(function () {
+                            textMess.innerHTML = "";
+                            textMess.innerHTML = originalText;
+                        }, 5000);
+                    }
+                    break;
+                case -1:
+                    if (!textMess.innerHTML.includes(notIn)) {
+                        textMess.innerHTML += notIn;
+                        setTimeout(function () {
+                            textMess.innerHTML = "";
+                            textMess.innerHTML = originalText;
+                        }, 5000);
+                    }
+                    break;
             }
         },
         error: function (responde) {

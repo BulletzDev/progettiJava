@@ -34,10 +34,17 @@ public class BattleshipController {
     }
 
     @GetMapping("/attack/{index}")
-    public int attack(@PathVariable("index") int index) throws AlreadyHitException {
+    public int attack(@PathVariable("index") int index) {
         int x = index / 10;
         int y = index % 10;
-        return game.playerMove(x, y);
+        int result = 0;
+        try {
+            result = game.playerMove(x, y);
+        } catch (AlreadyHitException e) {
+            return -2;
+        }
+
+        return result;
     }
 
     private Ships genPosPlayer() {
