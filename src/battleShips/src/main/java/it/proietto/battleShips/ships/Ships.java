@@ -83,8 +83,8 @@ public class Ships {
                         throw new AlreadyHitException("Position already hit!");
                     }
                     node.setHit(true);
-                    ship.checkSunk();
-                    return checkWin();
+                    boolean justSunk = ship.checkSunk(); // Know if it just sank now
+                    return checkWin(justSunk);
                 }
             }
         }
@@ -100,34 +100,25 @@ public class Ships {
      *         1 if the player sunk a ship and won,
      *         0 if the player hasn't won yet.
      */
-    int checkWin() {
-        boolean allSunk = true;
-        boolean shipSunk = false;
+    public int checkWin(boolean justSunk) {
+    boolean allSunk = true;
 
-        for (Ship ship : allShips) {
-            boolean isShipSunk = true;
-            for (Node node : ship.getShip()) {
-                if (!node.isHit()) {
-                    isShipSunk = false;
-                    break; // No need to check the rest of the nodes
-                }
-            }
-
-            if (isShipSunk) {
-                shipSunk = true;
-            } else {
-                allSunk = false; // If any ship is not sunk, set allSunk to false
-            }
+    for (Ship ship : allShips) {
+        if (!ship.isSunk()) {
+            allSunk = false;
+            break;
         }
-
-        if (allSunk) {
-            return 1; // All ships are sunk
-        }
-        if (shipSunk) {
-            return 2; // At least one ship is sunk
-        }
-        return 0; // No ships are sunk
     }
+
+    if (allSunk) {
+        return 1; // Player won
+    }
+    if (justSunk) {
+        return 2; // Ship sunk this move, but not all
+    }
+    return 0; // Hit but no ship sunk
+}
+
 
     public void clearAll() {
         allShips.clear();

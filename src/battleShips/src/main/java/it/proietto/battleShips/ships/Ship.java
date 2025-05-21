@@ -22,12 +22,17 @@ public class Ship {
         }
     }
 
-    public void checkSunk() {
-        for (Node n : ship) {
-            if (!n.isHit()) {
-                return;
-            }
+    
+public boolean checkSunk() {
+    if (isSunk) return false; // Already sunk, do nothing
+
+    for (Node n : ship) {
+        if (!n.isHit()) {
+            return false; // Still floating
         }
-        isSunk = true;
     }
+
+    isSunk = true; // Just sunk now
+    return true;
+}
 }

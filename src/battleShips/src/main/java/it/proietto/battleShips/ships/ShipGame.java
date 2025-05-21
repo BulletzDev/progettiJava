@@ -32,14 +32,15 @@ public class ShipGame {
     /**
      * @param posX indicates the row that you are hitting
      * @param posy indicates the column that you are hitting
-     * @return -1 if boat not initialized, 0 if the player hit and didn't win, 1 if
+     * @return 0 if the player hit and didn't win and didn't sunk ship, 1 if
      *         hit ship sunk and won, 2 if
      *         hit and the ship sunk and didn't win,3 if didn't hit
-     * @throws AlreadyHitException if the position has already been hit
+     * @throws AlreadyHitException          if the position has already been hit
+     * @throws FieldNotInilializedException if one of the fields isn't initialized
      */
-    public int playerMove(int posX, int posy) throws AlreadyHitException {
+    public int playerMove(int posX, int posy) throws AlreadyHitException, FieldNotInilializedException {
         if (playerField.isEmpty() || computerField.isEmpty()) {
-            return -1;
+            throw new FieldNotInilializedException("The field isnt initialized!");
         }
         return computerField.hitBoat(posX, posy);
     }
@@ -99,5 +100,24 @@ public class ShipGame {
         if (posY < 9)
             potentialTargets.add("" + posX + (posY + 1));
     }
+
+    /**
+     * @return 0 = no one won yet,
+     *         1 = player won (all computer ships sunk),
+     *         2 = computer won (all player ships sunk)
+     */
+public int checkWin() {
+    boolean playerWon = !computerField.getAllShips().isEmpty() &&
+                        computerField.getAllShips().stream().allMatch(Ship::isSunk);
+    boolean computerWon = !playerField.getAllShips().isEmpty() &&
+                          playerField.getAllShips().stream().allMatch(Ship::isSunk);
+
+    if (playerWon)
+        return 1;
+    if (computerWon)
+        return 2;
+    return 0;
+}
+
 
 }

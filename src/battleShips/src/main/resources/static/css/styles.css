@@ -21,3 +21,18 @@
 .ship {
     background-color: lightblue;
 }
+
+.blocker{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1); /* optional: dimmed overlay */
+  z-index: 1;
+}
+
+.replay {
+  position: absolute; /* or absolute if you want relative to a parent */
+  z-index: 10; /* higher than blocker */
+}

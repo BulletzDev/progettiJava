@@ -1,14 +1,17 @@
 package it.proietto.battleShips;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.proietto.AttackResponse;
 import it.proietto.battleShips.ships.AlreadyHitException;
+import it.proietto.battleShips.ships.FieldNotInilializedException;
 import it.proietto.battleShips.ships.ShipGame;
 import it.proietto.battleShips.ships.Ships;
 
@@ -34,17 +37,34 @@ public class BattleshipController {
     }
 
     @GetMapping("/attack/{index}")
-    public int attack(@PathVariable("index") int index) {
+    public AttackResponse attack(@PathVariable("index") int index) {
+
         int x = index / 10;
         int y = index % 10;
-        int result = 0;
-        try {
-            result = game.playerMove(x, y);
-        } catch (AlreadyHitException e) {
-            return -2;
-        }
+        AttackResponse response = new AttackResponse();
 
-        return result;
+        try {
+            response.setPlayerResult(game.playerMove(x, y));
+        } catch (AlreadyHitException e) {
+            response.setPlayerResult(-2);
+            return response;
+        } catch (FieldNotInilializedException e) {
+            response.setPlayerResult(-1);
+            return response;
+        }
+        List<Integer> cMove = game.computerMove();
+        response.setComputerResult(cMove);
+        return response;
+    }
+
+    @GetMapping("/checkWin")
+    public int checkWin() {
+        return game.checkWin();
+    }
+
+    @DeleteMapping("/restartGame")
+    public void restartgame(){
+        game= new ShipGame();
     }
 
     private Ships genPosPlayer() {
