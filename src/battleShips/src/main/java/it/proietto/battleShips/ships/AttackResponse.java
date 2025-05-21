@@ -1,4 +1,4 @@
-package it.proietto;
+package it.proietto.battleShips.ships;
 
 import java.util.ArrayList;
 import java.util.List;
