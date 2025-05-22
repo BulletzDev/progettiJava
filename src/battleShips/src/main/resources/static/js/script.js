@@ -164,7 +164,7 @@ function attack(index) {
 }
 
 function playerAttack(response, index) {
-    const alrHit = "Casella " + parseInt(index / 10) + "" + index % 10 + " già colpita !!";
+    const alrHit = "Casella con x: " + parseInt(index / 10) + " ,y: " + index % 10 + " già colpita !!";
     const sunk = "Il giocatore ha affondato una barca!";
     const won = "Il giocatore ha vinto!";
     switch (response) {
