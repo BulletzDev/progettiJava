@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
         placeAuto();
         startAttack();
     });
-
 });
 
 function initialize() {
@@ -22,7 +21,6 @@ function initialize() {
         url: '/getGrid',
         method: 'GET',
         success: function (response) {
-            console.log(response)
             placeShips(response);
             if (response.player.allShips && response.player.allShips.length > 0) {
                 startAttack();
@@ -40,7 +38,6 @@ function checkWinOnload() {
         url: '/checkWin',
         method: 'GET',
         success: function (response) {
-            console.log(response)
             if (response === 1) {
                 displayText("Il giocatore ha vinto!", 10000);
                 blockUI();
@@ -62,21 +59,21 @@ function startAttack() {
 }
 
 function placingButtons() {
-    const manuallyButton = document.createElement('button');
+    /*const manuallyButton = document.createElement('button');
     manuallyButton.setAttribute('type', 'button');
-    manuallyButton.classList.add('btn', 'btn-outline-secondary', 'w-25', 'me-5');
+    manuallyButton.classList.add('btn', 'btn-outline-dark', 'w-25', 'me-5');
     manuallyButton.id = 'manPlace';
-    manuallyButton.textContent = 'Place Manually';
+    manuallyButton.textContent = 'Place Manually';*/
 
     // Create the "Place Automatically" button
     const autoPlaceButton = document.createElement('button');
     autoPlaceButton.setAttribute('type', 'button');
-    autoPlaceButton.classList.add('btn', 'btn-outline-secondary', 'w-25','ms-5');
+    autoPlaceButton.classList.add('btn', 'btn-outline-dark', 'w-25','ms-5');
     autoPlaceButton.id = 'autoPlace';
     autoPlaceButton.textContent = 'Place Automatically';
 
     // Append buttons to the container
-    document.getElementById("buttons").append(manuallyButton, autoPlaceButton);
+    document.getElementById("buttons").append(autoPlaceButton);
 }
 
 function createEmptyGrid(container) {
@@ -118,19 +115,19 @@ function placeShips(response) {
     });
 
     // Place computer ships (for visual representation)
-    /*
-    colorIndex = 0;
+
+    //colorIndex = 0;
     response.computer.allShips.forEach(element => {
         element.ship.forEach(element1 => {
             const cell = $('#computer-grid .cell').eq(element1.posX + "" + element1.posy);
-            cell.addClass('ship');
-            cell.css('background-color', colors[colorIndex]);
+            /*cell.addClass('ship');
+            cell.css('background-color', colors[colorIndex]);*/
             if (element1.hit) {
                 cell.html("X");
             }
         });
-        colorIndex++;
-    });*/
+        //colorIndex++;
+    });
 
     // PLAYER has alreadyHit to computer?
     response.player.alreadyHit.forEach(hit => {
