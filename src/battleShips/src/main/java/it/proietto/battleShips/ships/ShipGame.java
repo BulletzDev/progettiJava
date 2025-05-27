@@ -106,18 +106,17 @@ public class ShipGame {
      *         1 = player won (all computer ships sunk),
      *         2 = computer won (all player ships sunk)
      */
-public int checkWin() {
-    boolean playerWon = !computerField.getAllShips().isEmpty() &&
-                        computerField.getAllShips().stream().allMatch(Ship::isSunk);
-    boolean computerWon = !playerField.getAllShips().isEmpty() &&
-                          playerField.getAllShips().stream().allMatch(Ship::isSunk);
+    public int checkWin() {
+        boolean playerWon = !computerField.getAllShips().isEmpty() &&
+                computerField.getAllShips().stream().allMatch(Ship::isSunk);
+        boolean computerWon = !playerField.getAllShips().isEmpty() &&
+                playerField.getAllShips().stream().allMatch(Ship::isSunk);
 
-    if (playerWon)
-        return 1;
-    if (computerWon)
-        return 2;
-    return 0;
-}
-
+        if (playerWon)
+            return 1;
+        if (computerWon)
+            return 2;
+        return 0;
+    }
 
 }

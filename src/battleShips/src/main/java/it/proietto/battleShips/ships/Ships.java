@@ -101,24 +101,23 @@ public class Ships {
      *         0 if the player hasn't won yet.
      */
     public int checkWin(boolean justSunk) {
-    boolean allSunk = true;
+        boolean allSunk = true;
 
-    for (Ship ship : allShips) {
-        if (!ship.isSunk()) {
-            allSunk = false;
-            break;
+        for (Ship ship : allShips) {
+            if (!ship.isSunk()) {
+                allSunk = false;
+                break;
+            }
         }
-    }
 
-    if (allSunk) {
-        return 1; // Player won
+        if (allSunk) {
+            return 1; // Player won
+        }
+        if (justSunk) {
+            return 2; // Ship sunk this move, but not all
+        }
+        return 0; // Hit but no ship sunk
     }
-    if (justSunk) {
-        return 2; // Ship sunk this move, but not all
-    }
-    return 0; // Hit but no ship sunk
-}
-
 
     public void clearAll() {
         allShips.clear();
@@ -128,5 +127,27 @@ public class Ships {
 
     public boolean isEmpty() {
         return allShips.isEmpty();
+    }
+
+    public Ships maskedForPlayer() {
+        Ships masked = new Ships();
+        masked.setAlreadyHit(new ArrayList<>(this.alreadyHit));
+
+        List<Ship> maskedShips = new ArrayList<>();
+        for (Ship ship : this.allShips) {
+            for (Node node : ship.getShip()) {
+                if (node.isHit()) {
+                    Ship maskedShip = new Ship();
+                    List<Node> singleHit = new ArrayList<>();
+                    singleHit.add(new Node(node.getPosX(), node.getPosy(), true));
+                    maskedShip.setShip(singleHit);
+                    maskedShip.setSunk(false); // You can optionally check if ship is sunk
+                    maskedShips.add(maskedShip);
+                }
+            }
+        }
+
+        masked.setAllShips(maskedShips);
+        return masked;
     }
 }

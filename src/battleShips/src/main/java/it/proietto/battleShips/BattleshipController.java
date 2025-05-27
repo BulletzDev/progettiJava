@@ -17,14 +17,14 @@ import it.proietto.battleShips.ships.Ships;
 
 @RestController
 public class BattleshipController {
-
+    
     ShipGame game = new ShipGame();
 
     @GetMapping("/popGrid")
     public Map<String, Ships> popgrid() {
         Map<String, Ships> griglie = new HashMap<>();
         griglie.put("player", genPosPlayer());
-        griglie.put("computer", genPosComputer());
+        griglie.put("computer", genPosComputer().maskedForPlayer());
         return griglie;
     }
 
@@ -32,7 +32,7 @@ public class BattleshipController {
     public Map<String, Ships> getGrid() {
         Map<String, Ships> griglie = new HashMap<>();
         griglie.put("player", game.getPlayerField());
-        griglie.put("computer", game.getComputerField());
+        griglie.put("computer", game.getComputerField().maskedForPlayer());
         return griglie;
     }
 
@@ -63,8 +63,8 @@ public class BattleshipController {
     }
 
     @DeleteMapping("/restartGame")
-    public void restartgame(){
-        game= new ShipGame();
+    public void restartgame() {
+        game = new ShipGame();
     }
 
     private Ships genPosPlayer() {

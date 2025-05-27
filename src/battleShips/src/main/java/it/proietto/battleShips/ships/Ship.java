@@ -10,6 +10,11 @@ public class Ship {
     private List<Node> ship = new ArrayList<>();
     private boolean isSunk = false;
 
+    public Ship() {
+        this.ship = new ArrayList<>();
+        this.isSunk = false;
+    }
+
     public Ship(int posx, int posy, int length, boolean vertical) {
         if (vertical) {
             for (int i = 0; i < length; i++) {
@@ -22,17 +27,17 @@ public class Ship {
         }
     }
 
-    
-public boolean checkSunk() {
-    if (isSunk) return false; // Already sunk, do nothing
+    public boolean checkSunk() {
+        if (isSunk)
+            return false; // Already sunk, do nothing
 
-    for (Node n : ship) {
-        if (!n.isHit()) {
-            return false; // Still floating
+        for (Node n : ship) {
+            if (!n.isHit()) {
+                return false; // Still floating
+            }
         }
-    }
 
-    isSunk = true; // Just sunk now
-    return true;
-}
+        isSunk = true; // Just sunk now
+        return true;
+    }
 }
