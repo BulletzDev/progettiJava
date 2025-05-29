@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("autoPlace").addEventListener("click", function () {
         placeAuto();
         startAttack();
+        resetButton();
     });
 });
 
@@ -24,13 +25,34 @@ function initialize() {
             placeShips(response);
             if (response.player.allShips && response.player.allShips.length > 0) {
                 startAttack();
-
+                resetButton();
             }
         },
         error: function () {
             alert('Errore nel caricamento delle griglie!');
         }
     });
+}
+
+function resetButton() {
+    const reset = document.createElement('button');
+    reset.setAttribute('type', 'button');
+    reset.classList.add('btn', 'btn-outline-secondary', 'w-25', 'me-5', 'replay', "top-50", "start-50", "translate-middle");
+    reset.id = 'replay';
+    reset.textContent = 'Replay';
+    document.getElementById("buttons").append(reset);
+    document.getElementById("replay").addEventListener("click", function () {
+        $.ajax({
+            url: '/restartGame',
+            method: "DELETE",
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                console.error("Errore.");
+            }
+        });
+    })
 }
 
 function checkWinOnload() {
@@ -56,6 +78,7 @@ function startAttack() {
     document.getElementById("buttons").innerHTML = "";
     document.getElementById("descText").innerHTML = "ATTACCA! clicca su una casella del campo avversario<br>";
     originalText = document.getElementById("descText").innerHTML;
+
 }
 
 function placingButtons() {
@@ -68,7 +91,7 @@ function placingButtons() {
     // Create the "Place Automatically" button
     const autoPlaceButton = document.createElement('button');
     autoPlaceButton.setAttribute('type', 'button');
-    autoPlaceButton.classList.add('btn', 'btn-outline-dark', 'w-25','ms-5');
+    autoPlaceButton.classList.add('btn', 'btn-outline-dark', 'w-25', 'ms-5');
     autoPlaceButton.id = 'autoPlace';
     autoPlaceButton.textContent = 'Place Automatically';
 
@@ -80,7 +103,7 @@ function createEmptyGrid(container) {
     for (let i = 0; i < 100; i++) {
         let item = document.createElement("div");
         item.setAttribute("data-index", parseInt(i / 10) + "" + i % 10);
-        item.classList.add("cell", "justify-content-center", "align-items-center","fs-2");
+        item.classList.add("cell", "justify-content-center", "align-items-center", "fs-2");
         document.getElementById(container).append(item);
     }
 }
@@ -179,7 +202,7 @@ function playerAttack(response, index) {
             break;
         case 1:
             document.getElementById("computer-grid").querySelector(`.cell[data-index="${index}"`).innerHTML = "X";
-            displayText(won, 5000);
+            displayText(won, 100000);
             blockUI();
             break;
         case 2:
@@ -205,7 +228,7 @@ function computerAttack(response) {
             break;
         case 1:
             document.getElementById("player-grid").querySelector(`.cell[data-index="${index}"`).innerHTML = "X";
-            displayText(won, 5000);
+            displayText(won,100000);
             blockUI();
             break;
         case 2:
@@ -232,25 +255,6 @@ function displayText(text, time) {
 
 function blockUI() {
     document.getElementById('blocker').classList.toggle("blocker");
-    const reset = document.createElement('button');
-    reset.setAttribute('type', 'button');
-    reset.classList.add('btn', 'btn-outline-secondary', 'w-25', 'me-5', 'replay', "top-50", "start-50", "translate-middle");
-    reset.id = 'replay';
-    reset.textContent = 'Replay';
-    document.getElementById("buttons").append(reset);
-
-        document.getElementById("replay").addEventListener("click", function () {
-        $.ajax({
-            url: '/restartGame',
-            method: "DELETE",
-            success: function () {
-                location.reload();
-            },
-            error: function () {
-                console.error("Errore.");
-            }
-        });
-    })
 }
 
 
